@@ -7,7 +7,7 @@ def extract_nii_gz(file_path, target_dir):
     """Extract .nii.gz files to .nii and save them in the target directory."""
     try:
         with gzip.open(file_path, 'rb') as f_in:
-            with open(os.path.join(target_dir, os.path.basename(file_path)[:-3]), 'wb') as f_out:
+            with open(os.path.join(target_  dir, os.path.basename(file_path)[:-3]), 'wb') as f_out:
                 shutil.copyfileobj(f_in, f_out)
         print(f"Extracted: {file_path}")
     except gzip.BadGzipFile:
