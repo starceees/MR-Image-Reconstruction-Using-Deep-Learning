@@ -9,7 +9,7 @@ orig_path = "/home/raghuram/ARPL/MR-Image-Reconstruction-Using-Deep-Learning/Tas
 seg_path  = "/home/raghuram/ARPL/MR-Image-Reconstruction-Using-Deep-Learning/Data/segoutput/la_001.nii.gz"   
 
 # Output PDF file
-output_pdf = "overlay_results.pdf"
+output_pdf = "overlay_results_2.pdf"
 
 # Load images
 orig_img = nib.load(orig_path).get_fdata()  # shape (X, Y, Z)
@@ -28,7 +28,7 @@ with PdfPages(output_pdf) as pdf:
         mask = np.ma.masked_where(seg_img[..., z] == 0, seg_img[..., z])
 
         # 3) Overlay the segmentation in red
-        ax.imshow(mask, cmap="Reds", alpha=1, origin="lower")
+        ax.imshow(mask, cmap="magma", alpha=1, origin="lower")
 
         ax.set_title(f"Slice {z}")
         ax.axis("off")
