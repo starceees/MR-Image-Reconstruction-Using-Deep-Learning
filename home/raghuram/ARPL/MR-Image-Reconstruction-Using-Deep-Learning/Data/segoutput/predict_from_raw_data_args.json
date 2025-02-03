@@ -1,0 +1,11 @@
+{
+    "folder_with_segs_from_prev_stage": null,
+    "list_of_lists_or_source_folder": "home/raghuram/ARPL/MR-Image-Reconstruction-Using-Deep-Learning/nnUNet_raw/Dataset002_Heart/imagesTs/la_001_0000.nii.gz",
+    "num_parts": 1,
+    "num_processes_preprocessing": 3,
+    "num_processes_segmentation_export": 3,
+    "output_folder_or_list_of_truncated_output_files": "home/raghuram/ARPL/MR-Image-Reconstruction-Using-Deep-Learning/Data/segoutput",
+    "overwrite": true,
+    "part_id": 0,
+    "save_probabilities": false
+}
