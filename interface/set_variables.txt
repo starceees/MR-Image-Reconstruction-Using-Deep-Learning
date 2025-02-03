@@ -1,0 +1,3 @@
+export nnUNet_raw=~/ARPL/MR-Image-Reconstruction-Using-Deep-Learning/nnUNet_raw
+export nnUNet_preprocessed=~/ARPL/MR-Image-Reconstruction-Using-Deep-Learning/nnUNet_preprocessed
+export nnUNet_results=~/ARPL/MR-Image-Reconstruction-Using-Deep-Learning/nnUNet_results
