@@ -16,8 +16,10 @@ def evaluate(model, loader, device, criterion):
     with torch.no_grad():
         for x, y in loader:
             x, y = x.to(device), y.to(device)
-            outputs = model(x)
-            loss_val = criterion(outputs, y)
+            # Use AMP autocast in evaluation if CUDA is available
+            with torch.cuda.amp.autocast(enabled=(device.type == 'cuda')):
+                outputs = model(x)
+                loss_val = criterion(outputs, y)
             losses.append(loss_val.item())
             metrics_list.append(calculate_metrics(outputs, y))
     return losses, aggregate_metrics(metrics_list)
@@ -26,9 +28,15 @@ def train_model(config, model, loaders):
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     model.to(device)
     
+    # Ensure the learning rate is a float (in case it was read as a string)
+    lr = float(config['lr']) if isinstance(config['lr'], str) else config['lr']
+    
     criterion = torch.nn.CrossEntropyLoss()
-    optimizer = torch.optim.Adam(model.parameters(), lr=config['lr'])
+    optimizer = torch.optim.Adam(model.parameters(), lr=lr)
     scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='max', patience=3)
+    
+    # Initialize AMP scaler if using CUDA for FP16 training
+    scaler = torch.cuda.amp.GradScaler(enabled=(device.type == 'cuda'))
     
     best_dice = 0
     wandb.init(project=config['wandb_project'], config=config)
@@ -41,10 +49,16 @@ def train_model(config, model, loaders):
         for x, y in tqdm(loaders['train'], desc=f"Epoch {epoch+1} Training"):
             x, y = x.to(device), y.to(device)
             optimizer.zero_grad()
-            outputs = model(x)
-            loss = criterion(outputs, y)
-            loss.backward()
-            optimizer.step()
+            
+            # Use mixed precision training if on CUDA
+            with torch.cuda.amp.autocast(enabled=(device.type == 'cuda')):
+                outputs = model(x)
+                loss = criterion(outputs, y)
+            
+            # Backward pass using the scaler.
+            scaler.scale(loss).backward()
+            scaler.step(optimizer)
+            scaler.update()
             
             train_losses.append(loss.item())
             train_metrics_list.append(calculate_metrics(outputs, y))

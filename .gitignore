@@ -9,3 +9,5 @@ nnUNet
 nnUNet_preprocessed
 nnUNet_raw
 nnUNet_results
+Implementation/__pycache__
+Implementation/wandb

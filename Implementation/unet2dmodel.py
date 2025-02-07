@@ -20,7 +20,7 @@ class Down2D(nn.Module):
         super(Down2D, self).__init__()
         self.pool = nn.MaxPool2d(2)
         self.conv = DoubleConv2D(in_channels, out_channels)
-        
+        con
     def forward(self, x):
         x = self.pool(x)
         return self.conv(x)
