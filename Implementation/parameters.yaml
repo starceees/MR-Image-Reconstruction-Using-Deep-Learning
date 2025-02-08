@@ -1,0 +1,10 @@
+data_root: "/home/raghuram/ARPL/MR-Image-Reconstruction-Using-Deep-Learning/Task02_Heart"
+batch_size: 8
+epochs: 100
+lr: 1e-4
+seed: 42
+target_size: [256, 256]
+num_classes: 2
+base_filters: 32
+bilinear: true
+wandb_project: "cardiac_segmentation"
