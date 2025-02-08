@@ -30,7 +30,7 @@ class Up2D(nn.Module):
         if bilinear:
             self.up = nn.Upsample(scale_factor=2, mode='bilinear', align_corners=True)
         else:
-            # Note: in_channels is assumed to be from the concatenation, so use half for transposed conv.
+            in_channels is assumed to be from the concatenation, so use half for transposed conv.
             self.up = nn.ConvTranspose2d(in_channels // 2, in_channels // 2, kernel_size=2, stride=2)
         self.conv = DoubleConv2D(in_channels, out_channels)
         

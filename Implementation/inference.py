@@ -42,13 +42,6 @@ def infer_2d_slices(volume_np, model, device):
     """
     Performs inference on each axial slice of a 3D volume using a trained 2D UNet model.
     
-    Args:
-        volume_np (numpy.ndarray): Input 3D volume with shape (D, H, W).
-        model (torch.nn.Module): Trained 2D UNet model.
-        device (torch.device): Device on which to run inference.
-    
-    Returns:
-        pred_mask_np (numpy.ndarray): Predicted segmentation mask for the volume (D, H, W).
     """
     D, H, W = volume_np.shape
     pred_mask_np = np.zeros((D, H, W), dtype=np.uint8)
@@ -89,8 +82,7 @@ def infer_2d_slices(volume_np, model, device):
 def visualize_2d_inference(config, model, device):
     """
     Loads test volumes from the imagesTs folder, runs slice-wise inference on each
-    volume using a 2D UNet model, and saves a PDF with visualizations showing the
-    original center slice and a red-overlay segmentation.
+    volume using a 2D UNet model. .
     """
     ROOT_DIR = config['data_root']
     test_folder = os.path.join(ROOT_DIR, "imagesTs")
@@ -141,9 +133,7 @@ def visualize_2d_inference(config, model, device):
     
     print(f"Inference results saved to: {output_pdf}")
 
-# =============================================================================
-# 4. Main Guard
-# =============================================================================
+
 if __name__ == "__main__":
     # Load configuration parameters from YAML.
     with open("parameters.yaml", "r") as f:
@@ -168,8 +158,6 @@ if __name__ == "__main__":
     checkpoint_path = "checkpoints/best_model.pth"
     model.load_state_dict(torch.load(checkpoint_path, map_location=device))
     
-    # 1. Run inference using the DataLoader and print aggregated metrics.
     run_inference(model, test_loader, device)
     
-    # 2. Run slice-wise inference on full volumes from imagesTs and visualize the results.
     visualize_2d_inference(config, model, device)

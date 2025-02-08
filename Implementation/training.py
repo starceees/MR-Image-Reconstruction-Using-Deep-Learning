@@ -28,7 +28,7 @@ def train_model(config, model, loaders):
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     model.to(device)
     
-    # Ensure the learning rate is a float (in case it was read as a string)
+    
     lr = float(config['lr']) if isinstance(config['lr'], str) else config['lr']
     
     criterion = torch.nn.CrossEntropyLoss()
@@ -88,7 +88,7 @@ def train_model(config, model, loaders):
         wandb.log(log)
         print(f"Epoch {epoch + 1}: Train Loss = {avg_train_loss:.4f}, Val Loss = {avg_val_loss:.4f}, Val Dice = {val_metrics['dice']:.4f}")
         
-        # Create checkpoints folder if not exists.
+        # Create checkpoints 
         os.makedirs("checkpoints", exist_ok=True)
         # Save checkpoint every 20 epochs.
         if (epoch + 1) % 20 == 0:
